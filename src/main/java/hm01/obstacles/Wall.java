@@ -1,19 +1,23 @@
 package hm01.obstacles;
 
-import hm01.Obstacles;
-import hm01.ParticipantRestrictions;
+import hm01.participants.Participant;
 
-public class Wall implements Obstacles {
+public class Wall implements Obstacle {
 
-    private static final int WALL_HEIGHT = 15;
+    private final int height;
 
+    public Wall(int height) {
+        this.height = height;
+    }
 
     @Override
-    public void overcomingAnObstacle(ParticipantRestrictions participant) {
-        if(participant.getWallHeight() > WALL_HEIGHT && participant.isPassedTheObstacle()) {
-            participant.jump();
+    public boolean passObstacleBy(Participant participant) {
+        if(participant.jump() > height) {
+            System.out.println("Участник " + participant + " успешно перепрыгнул стену");
+            return true;
         } else {
-            participant.setPassedTheObstacle(false);
+            System.out.println("Участник " + participant + " не смог перепрыгнуть стену " + height);
+            return false;
         }
     }
 }

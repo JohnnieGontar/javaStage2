@@ -4,38 +4,41 @@ package hm01;
 import hm01.obstacles.Treadmill;
 import hm01.obstacles.Wall;
 import hm01.participants.Cat;
+import hm01.participants.Participant;
 import hm01.participants.Person;
 import hm01.participants.Robot;
+
+import java.util.Random;
 
 public class Main {
 
     public static void main(String[] args) {
+        System.out.println("Подготовительный этап...");
+        Competition competition = createAndPrepareCompetition();
 
-        ParticipantRestrictions[] participants = getParticipants();
-        Obstacles[] obstacles = getObstacles();
+        System.out.println("Соревнование началось!");
+        competition.startCompetition();
 
-        for (ParticipantRestrictions participant : participants) {
-            for (Obstacles obstacle : obstacles) {
-                obstacle.overcomingAnObstacle(participant);
-            }
+        System.out.println("Соревнование окончено! Победители:");
+        for (Participant winner : competition.getLastWinners()) {
+            System.out.println(winner);
         }
-
     }
 
+    private static Competition createAndPrepareCompetition() {
+        Participant person = new Person("Andrey", 50, 500);
+        Participant cat = new Cat("Tomas", 200, 1500);
+        Participant robot = new Robot("Android", 150, 5000);
 
-    private static Obstacles[] getObstacles() {
-        return new Obstacles[]{
-                new Treadmill(),
-                new Wall()
-        };
-    }
+        Random random = new Random();
 
-    private static ParticipantRestrictions[] getParticipants() {
-        return new ParticipantRestrictions[]{
-                new Person(35, 5),
-                new Cat(10, 25),
-                new Robot(40, 20)
-        };
+        Wall wall = new Wall(random.nextInt(200));
+        Treadmill treadmill = new Treadmill(random.nextInt(1500));
+
+        Competition competition = new Competition("Space war");
+        competition.setParticipants(person, cat, robot);
+        competition.setObstacles(wall, treadmill);
+        return competition;
     }
 
 }

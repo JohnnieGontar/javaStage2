@@ -1,18 +1,23 @@
 package hm01.obstacles;
 
-import hm01.Obstacles;
-import hm01.ParticipantRestrictions;
+import hm01.participants.Participant;
 
-public class Treadmill implements Obstacles {
+public class Treadmill implements Obstacle {
 
-    private static final int TRACK_LENGTH = 30;
+    private final int length;
+
+    public Treadmill(int length) {
+        this.length = length;
+    }
 
     @Override
-    public void overcomingAnObstacle(ParticipantRestrictions participant) {
-        if(participant.getTrackLength() > TRACK_LENGTH && participant.isPassedTheObstacle()) {
-            participant.run();
+    public boolean passObstacleBy(Participant participant) {
+        if(participant.run() > length) {
+            System.out.println("Участник " + participant + " успешно пробежал дистанцию");
+            return true;
         } else {
-            participant.setPassedTheObstacle(false);
+            System.out.println("Участник " + participant + " не смог пробежать дистанцию " + length);
+            return false;
         }
     }
 
